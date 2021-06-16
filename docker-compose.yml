@@ -1,0 +1,9 @@
+blog-ts-postgres:
+  image: stevebunlon/fa-blog-ts-postgres
+  container_name: fa-blog-ts-postgres
+  ports:
+    - "5437:5432"
+  environment:
+    - POSTGRES_DB=blog
+    - POSTGRES_USER=blog
+    - POSTGRES_PASSWORD=secret
