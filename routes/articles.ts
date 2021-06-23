@@ -1,9 +1,12 @@
-import { models } from "../models";
-import { Params, RecordsGetter } from "forest-express-sequelize";
-const articles = models.articles;
-
 import * as express from 'express';
-import { PermissionMiddlewareCreator } from "forest-express-sequelize";
+import {
+  PermissionMiddlewareCreator,
+  RecordCreator,
+  RecordGetter,
+  RecordsCounter,
+  RecordsGetter
+} from "forest-express-sequelize";
+import { Article } from "../models/article";
 
 const router = express.Router();
 const permissionMiddlewareCreator = new PermissionMiddlewareCreator('articles');
@@ -15,6 +18,10 @@ const permissionMiddlewareCreator = new PermissionMiddlewareCreator('articles');
 // Create a Article
 router.post('/articles', permissionMiddlewareCreator.create(), (request, response, next) => {
   // Learn what this route does here: https://docs.forestadmin.com/documentation/v/v6/reference-guide/routes/default-routes#create-a-record
+  console.log(request.query);
+  console.log(request.params);
+  /*const recordCreator = new RecordCreator(Article);
+  const createdRecord = await recordCreator.create({ body: request.query.body});*/
   next();
 });
 
@@ -33,22 +40,27 @@ router.delete('/articles/:recordId', permissionMiddlewareCreator.delete(), (requ
 // Get a list of Articles
 router.get('/articles', permissionMiddlewareCreator.list(), async (request, response) => {
   // Learn what this route does here: https://docs.forestadmin.com/documentation/v/v6/reference-guide/routes/default-routes#get-a-list-of-records
-  const params: Params = { }
-  const articlesGetter = new RecordsGetter(articles);
-  const _articles = await articlesGetter.getAll(params);
-  return response.json(await articlesGetter.serialize(_articles));
+  const recordsGetter = new RecordsGetter(Article);
+  const articles = await recordsGetter.getAll(request.params);
+  const articlesSerialized = await recordsGetter.serialize(articles);
+  response.json(articlesSerialized);
 });
 
 // Get a number of Articles
-router.get('/articles/count', permissionMiddlewareCreator.list(), (request, response, next) => {
+router.get('/articles/count', permissionMiddlewareCreator.list(), async (request, response, next) => {
   // Learn what this route does here: https://docs.forestadmin.com/documentation/v/v6/reference-guide/routes/default-routes#get-a-number-of-records
-  next();
+  const recordsCounter = new RecordsCounter(Article);
+  const count = await recordsCounter.count(request.query);
+  response.json({ count });
 });
 
 // Get a Article
-router.get('/articles/:recordId(?!count)', permissionMiddlewareCreator.details(), (request, response, next) => {
+router.get('/articles/:recordId', permissionMiddlewareCreator.details(), async (request, response, next) => {
   // Learn what this route does here: https://docs.forestadmin.com/documentation/v/v6/reference-guide/routes/default-routes#get-a-record
-  next();
+  const recordGetter = new RecordGetter(Article);
+  const article = await recordGetter.get(request.params.recordId);
+  const articleSerialized = await recordGetter.serialize(article);
+  response.json(articleSerialized);
 });
 
 // Export a list of Articles
