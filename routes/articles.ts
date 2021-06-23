@@ -1,7 +1,6 @@
 import * as express from 'express';
 import {
   PermissionMiddlewareCreator,
-  RecordCreator,
   RecordGetter,
   RecordsCounter,
   RecordsGetter
@@ -18,10 +17,6 @@ const permissionMiddlewareCreator = new PermissionMiddlewareCreator('articles');
 // Create a Article
 router.post('/articles', permissionMiddlewareCreator.create(), (request, response, next) => {
   // Learn what this route does here: https://docs.forestadmin.com/documentation/v/v6/reference-guide/routes/default-routes#create-a-record
-  console.log(request.query);
-  console.log(request.params);
-  /*const recordCreator = new RecordCreator(Article);
-  const createdRecord = await recordCreator.create({ body: request.query.body});*/
   next();
 });
 
@@ -47,7 +42,7 @@ router.get('/articles', permissionMiddlewareCreator.list(), async (request, resp
 });
 
 // Get a number of Articles
-router.get('/articles/count', permissionMiddlewareCreator.list(), async (request, response, next) => {
+router.get('/articles/count', permissionMiddlewareCreator.list(), async (request, response) => {
   // Learn what this route does here: https://docs.forestadmin.com/documentation/v/v6/reference-guide/routes/default-routes#get-a-number-of-records
   const recordsCounter = new RecordsCounter(Article);
   const count = await recordsCounter.count(request.query);
@@ -55,7 +50,7 @@ router.get('/articles/count', permissionMiddlewareCreator.list(), async (request
 });
 
 // Get a Article
-router.get('/articles/:recordId', permissionMiddlewareCreator.details(), async (request, response, next) => {
+router.get('/articles/:recordId', permissionMiddlewareCreator.details(), async (request, response) => {
   // Learn what this route does here: https://docs.forestadmin.com/documentation/v/v6/reference-guide/routes/default-routes#get-a-record
   const recordGetter = new RecordGetter(Article);
   const article = await recordGetter.get(request.params.recordId);
