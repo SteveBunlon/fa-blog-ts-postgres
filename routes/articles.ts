@@ -70,4 +70,12 @@ router.delete('/articles', permissionMiddlewareCreator.delete(), (request, respo
   next();
 });
 
+router.post('/actions/update-body', permissionMiddlewareCreator.smartAction(), async (req, res) => {
+  const recordGetter =  new RecordsGetter(Article);
+  const recordIds = await recordGetter.getIdsFromRequest(req);
+  const timestamp = (new Date).toISOString();
+  await Article.update({body: timestamp}, {where: {id: recordIds}})
+  res.send({ success: 'success'})
+});
+
 export = router;
