@@ -1,11 +1,7 @@
 import * as express from 'express';
 import {
   PermissionMiddlewareCreator,
-  RecordGetter,
-  RecordsCounter,
-  RecordsGetter
 } from "forest-express-sequelize";
-import { Article } from "../models/article";
 
 const router = express.Router();
 const permissionMiddlewareCreator = new PermissionMiddlewareCreator('articles');
@@ -33,29 +29,20 @@ router.delete('/articles/:recordId', permissionMiddlewareCreator.delete(), (requ
 });
 
 // Get a list of Articles
-router.get('/articles', permissionMiddlewareCreator.list(), async (request, response) => {
+router.get('/articles', permissionMiddlewareCreator.list(), async (request, response, next) => {
   // Learn what this route does here: https://docs.forestadmin.com/documentation/v/v6/reference-guide/routes/default-routes#get-a-list-of-records
-  const recordsGetter = new RecordsGetter(Article);
-  const articles = await recordsGetter.getAll(request.params);
-  const articlesSerialized = await recordsGetter.serialize(articles);
-  response.json(articlesSerialized);
+  next();
 });
 
 // Get a number of Articles
-router.get('/articles/count', permissionMiddlewareCreator.list(), async (request, response) => {
-  // Learn what this route does here: https://docs.forestadmin.com/documentation/v/v6/reference-guide/routes/default-routes#get-a-number-of-records
-  const recordsCounter = new RecordsCounter(Article);
-  const count = await recordsCounter.count(request.query);
-  response.json({ count });
+router.get('/articles/count', permissionMiddlewareCreator.list(), async (request, response, next) => {
+  next();
 });
 
 // Get a Article
-router.get('/articles/:recordId', permissionMiddlewareCreator.details(), async (request, response) => {
+router.get('/articles/:recordId', permissionMiddlewareCreator.details(), async (request, response, next) => {
   // Learn what this route does here: https://docs.forestadmin.com/documentation/v/v6/reference-guide/routes/default-routes#get-a-record
-  const recordGetter = new RecordGetter(Article);
-  const article = await recordGetter.get(request.params.recordId);
-  const articleSerialized = await recordGetter.serialize(article);
-  response.json(articleSerialized);
+  next();
 });
 
 // Export a list of Articles

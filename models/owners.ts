@@ -3,7 +3,7 @@
 
 import {DataTypes, Model, Sequelize} from "sequelize";
 
-class Owners extends Model {
+export class Owners extends Model {
   public id!: number;
   public name!: string;
 

@@ -66,8 +66,8 @@
       "isRequired": false,
       "isSortable": true,
       "isVirtual": false,
-      "reference": "owners.ownerIdKey",
-      "inverseOf": null,
+      "reference": "owners.id",
+      "inverseOf": "articles",
       "relationship": "BelongsTo",
       "validations": []
     }, {
@@ -125,8 +125,8 @@
       "isRequired": false,
       "isSortable": true,
       "isVirtual": false,
-      "reference": "articles.ownerIdKey",
-      "inverseOf": null,
+      "reference": "articles.id",
+      "inverseOf": "owner",
       "relationship": "HasMany",
       "validations": []
     }, {
@@ -165,7 +165,7 @@
   }],
   "meta": {
     "liana": "forest-express-sequelize",
-    "liana_version": "7.11.1",
+    "liana_version": "7.12.3",
     "stack": {
       "database_type": "postgres",
       "engine": "nodejs",
