@@ -8,7 +8,11 @@ import {collection, CollectionOptions} from "forest-express-sequelize";
 
 const collectionOptions: CollectionOptions = {
   isSearchable: false,
-  actions: [],
+  actions: [{
+    name: 'Test',
+    type: 'bulk',
+    fields: [],
+  }],
   fields: [],
   segments: [],
 }

@@ -102,7 +102,20 @@
       "validations": []
     }],
     "segments": [],
-    "actions": []
+    "actions": [{
+      "name": "Test",
+      "type": "bulk",
+      "baseUrl": null,
+      "endpoint": "/forest/actions/test",
+      "httpMethod": "POST",
+      "redirect": null,
+      "download": false,
+      "fields": [],
+      "hooks": {
+        "load": false,
+        "change": []
+      }
+    }]
   }, {
     "name": "owners",
     "nameOld": "owners",
@@ -142,6 +155,21 @@
       "isSortable": true,
       "isVirtual": false,
       "reference": null,
+      "inverseOf": null,
+      "validations": []
+    }, {
+      "field": "likedArticles",
+      "type": ["String"],
+      "defaultValue": null,
+      "enums": null,
+      "integration": null,
+      "isFilterable": false,
+      "isPrimaryKey": false,
+      "isReadOnly": true,
+      "isRequired": false,
+      "isSortable": false,
+      "isVirtual": true,
+      "reference": "articles._id",
       "inverseOf": null,
       "validations": []
     }, {

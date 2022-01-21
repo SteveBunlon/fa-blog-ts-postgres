@@ -11,7 +11,7 @@ export class Owners extends Model {
     Owners.hasMany(models.articles, {
       foreignKey: {
         name: 'ownerIdKey',
-        field: 'owner_id',
+        field: 'owners_id',
       },
       as: 'articles',
     });

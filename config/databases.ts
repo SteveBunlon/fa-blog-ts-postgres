@@ -26,4 +26,4 @@ const databasesConfiguration: DatabaseConfiguration[] = [{
   },
 }];
 
-export default databasesConfiguration;
+export = databasesConfiguration;

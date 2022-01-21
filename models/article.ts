@@ -1,4 +1,5 @@
-import { Model, Sequelize, DataTypes, ModelCtor } from 'sequelize';
+import {Model, Sequelize, DataTypes, ModelCtor } from 'sequelize';
+import {Column, DataType, Default, IsUUID, PrimaryKey, Table} from 'sequelize-typescript';
 
 interface IArticleAttributes {
   id: number;
@@ -13,12 +14,20 @@ interface IArticleCreationAttributes {
   body: string | null;
 }
 
+@Table({
+  timestamps: true,
+})
 export class Article extends Model<IArticleAttributes, IArticleCreationAttributes> {
-  public id!: number;
   public title!: string | null;
   public body!: string | null;
   public createdAt!: Date;
   public updatedAt!: Date;
+
+  @IsUUID(4)
+  @Default(DataType.UUIDV4)
+  @PrimaryKey
+  @Column
+  public id!: string;
 
   public static associate(models: Record<string, ModelCtor<Model>>): void {
     Article.belongsTo(models.owners, {

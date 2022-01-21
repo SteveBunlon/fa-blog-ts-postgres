@@ -9,7 +9,11 @@ import {collection, CollectionOptions} from "forest-express-sequelize";
 const collectionOptions: CollectionOptions = {
   isSearchable: false,
   actions: [],
-  fields: [],
+  fields: [{
+    field: 'likedArticles',
+    type: ['String'],
+    reference: 'articles._id'
+  }],
   segments: [],
 }
 

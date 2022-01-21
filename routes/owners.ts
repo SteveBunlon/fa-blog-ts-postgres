@@ -1,5 +1,6 @@
 import * as express from 'express';
-import { PermissionMiddlewareCreator } from "forest-express-sequelize";
+import { PermissionMiddlewareCreator, RecordsGetter } from "forest-express-sequelize";
+import { Article } from '../models/article';
 
 const router = express.Router();
 const permissionMiddlewareCreator = new PermissionMiddlewareCreator('owners');
@@ -54,6 +55,30 @@ router.get('/owners.csv', permissionMiddlewareCreator.export(), (request, respon
 router.delete('/owners', permissionMiddlewareCreator.delete(), (request, response, next) => {
   // Learn what this route does here: https://docs.forestadmin.com/documentation/v/v6/reference-guide/routes/default-routes#delete-a-list-of-records
   next();
+});
+
+router.get('/owners/:owners_id/relationships/likedArticles', async (req, res, next) => {
+  const articles = await Article.findAll({limit: 4});
+  const articleSerializer = new RecordsGetter(Article);
+  // @ts-ignore
+  res.json(await articleSerializer.serialize(articles, { count: 10 }))
+});
+
+router.post('/api/stats/test', async (req, res, next) => {
+  //const articles = await Article.findAll();
+  const stats  = {
+    data: {
+      attributes: {
+        value: {
+          values: [{key: 'teub', values: [4, 7]}, {key: 'hu', values: [7, 6]}],
+        },
+      },
+      id: "30c157c0-47b6-11ec-8b9e-3f01c18c4134",
+      type: "stats"
+    }
+  }
+
+  res.json(stats);
 });
 
 export = router;

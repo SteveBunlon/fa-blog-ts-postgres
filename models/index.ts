@@ -1,7 +1,7 @@
 import { readdirSync } from "fs";
 import { join } from 'path';
 import * as Sequelize from 'sequelize';
-import databasesConfiguration from "../config/databases";
+import * as databasesConfiguration from "../config/databases";
 
 const connections: Record<string, Sequelize.Sequelize> = {};
 const objectMapping = Sequelize;
